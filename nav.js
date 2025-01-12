@@ -34,37 +34,53 @@ function initializeDropdown() {
 }
 
 function initializeFooter() {
-    const footer = document.querySelector('.footer');
+    const bottomContainer = document.querySelector('.bottom-container');
     const arrow = document.querySelector('.arrow-container');
-    let footerVisible = false;
+    let isVisible = false;
+    let lastScrollTop = 0;
 
-    // Desktop behavior with arrow
+    // Desktop arrow click behavior
     if (arrow && window.innerWidth > 600) {
         arrow.addEventListener('click', () => {
-            footerVisible = !footerVisible;
+            isVisible = !isVisible;
             arrow.classList.toggle('up');
-            footer.classList.toggle('visible');
+            bottomContainer.classList.toggle('visible');
         });
     }
 
-    // Mobile behavior - show footer at bottom of scroll
+    // Mobile scroll behavior
     if (window.innerWidth <= 600) {
         window.addEventListener('scroll', () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrolledToBottom = (windowHeight + st) >= (documentHeight - 20);
 
-            if ((windowHeight + scrollTop) >= (documentHeight - 10)) {
-                if (!footerVisible) {
-                    footerVisible = true;
-                    footer.classList.add('visible');
+            // Scrolling down
+            if (st > lastScrollTop) {
+                if (scrolledToBottom && !isVisible) {
+                    isVisible = true;
+                    bottomContainer.classList.add('visible');
                 }
-            } else {
-                if (footerVisible) {
-                    footerVisible = false;
-                    footer.classList.remove('visible');
+            } 
+            // Scrolling up
+            else {
+                if (!scrolledToBottom && isVisible) {
+                    isVisible = false;
+                    bottomContainer.classList.remove('visible');
                 }
             }
-        });
+            lastScrollTop = st <= 0 ? 0 : st;
+        }, { passive: true });
+
+        // Check initial position
+        const initialScroll = window.pageYOffset || document.documentElement.scrollTop;
+        const initialHeight = window.innerHeight;
+        const initialDocHeight = document.documentElement.scrollHeight;
+        
+        if ((initialHeight + initialScroll) >= (initialDocHeight - 20)) {
+            isVisible = true;
+            bottomContainer.classList.add('visible');
+        }
     }
 }

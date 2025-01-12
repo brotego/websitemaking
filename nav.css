@@ -54,11 +54,22 @@ nav {
 }
 
 main {
-    margin-top: 60px; /* Add space for fixed nav */
+    margin-top: 60px;
 }
 
 .bottom-container {
-    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    background: white;
+    z-index: 1000;
+}
+
+.bottom-container.visible {
+    transform: translateY(0);
 }
 
 .bottom-bar {
@@ -109,9 +120,7 @@ main {
 }
 
 .footer.visible {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    display: block;
 }
 
 .footer-left {
@@ -203,8 +212,6 @@ main {
 
     .bottom-bar {
         padding: 8px 10px;
-        position: fixed;
-        bottom: 0;
     }
 
     .bottom-items {
