@@ -37,7 +37,6 @@ function initializeFooter() {
     const bottomContainer = document.querySelector('.bottom-container');
     const arrow = document.querySelector('.arrow-container');
     let isVisible = false;
-    let lastScrollTop = 0;
 
     // Desktop arrow click behavior
     if (arrow && window.innerWidth > 600) {
@@ -51,34 +50,28 @@ function initializeFooter() {
     // Mobile scroll behavior
     if (window.innerWidth <= 600) {
         window.addEventListener('scroll', () => {
-            const st = window.pageYOffset || document.documentElement.scrollTop;
             const windowHeight = window.innerHeight;
             const documentHeight = document.documentElement.scrollHeight;
-            const scrolledToBottom = (windowHeight + st) >= (documentHeight - 20);
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Check if we're exactly at the bottom (with a small threshold)
+            const atBottom = Math.abs((windowHeight + scrollTop) - documentHeight) < 5;
 
-            // Scrolling down
-            if (st > lastScrollTop) {
-                if (scrolledToBottom && !isVisible) {
-                    isVisible = true;
-                    bottomContainer.classList.add('visible');
-                }
-            } 
-            // Scrolling up
-            else {
-                if (!scrolledToBottom && isVisible) {
-                    isVisible = false;
-                    bottomContainer.classList.remove('visible');
-                }
+            if (atBottom && !isVisible) {
+                isVisible = true;
+                bottomContainer.classList.add('visible');
+            } else if (!atBottom && isVisible) {
+                isVisible = false;
+                bottomContainer.classList.remove('visible');
             }
-            lastScrollTop = st <= 0 ? 0 : st;
         }, { passive: true });
 
-        // Check initial position
+        // Check initial scroll position
         const initialScroll = window.pageYOffset || document.documentElement.scrollTop;
         const initialHeight = window.innerHeight;
         const initialDocHeight = document.documentElement.scrollHeight;
         
-        if ((initialHeight + initialScroll) >= (initialDocHeight - 20)) {
+        if (Math.abs((initialHeight + initialScroll) - initialDocHeight) < 5) {
             isVisible = true;
             bottomContainer.classList.add('visible');
         }
