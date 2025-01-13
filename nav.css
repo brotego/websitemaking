@@ -81,7 +81,6 @@ main {
     border-top: 1px solid #000000;
     background: white;
     font-size: 14px;
-    height: 40px;
 }
 
 .arrow-container {
@@ -105,12 +104,13 @@ main {
     align-items: center;
     margin-right: 20px;
     margin-left: auto;
-    gap: 10px;
+    gap: 16px;
 }
 
 .time-box {
     border: 1px solid #000000;
     padding: 4px 12px;
+    white-space: nowrap;
 }
 
 .footer {
@@ -208,22 +208,32 @@ main {
     }
 
     .bottom-bar {
-        padding: 8px 10px;
+        padding: 6px 10px;
+        height: 36px;
     }
 
     .bottom-items {
-        margin-right: 10px;
-        margin-left: 10px;
-        gap: 8px;
+        margin-right: 8px;
+        margin-left: 40px;
+        gap: 6px;
     }
 
     .time-box {
-        padding: 4px 8px;
-        font-size: 11px;
+        padding: 2px 6px;
+        font-size: 10px;
+        border-width: 1px;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        height: 24px;
     }
 
     .arrow-container {
-        display: none;
+        display: block;
+        left: 12px;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 6px solid black;
     }
 
     .footer {
@@ -232,11 +242,6 @@ main {
 }
 
 @media (max-width: 480px) {
-    .time-box {
-        font-size: 10px;
-        padding: 4px 6px;
-    }
-
     .bottom-items {
         gap: 6px;
     }
